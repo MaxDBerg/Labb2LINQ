@@ -78,6 +78,7 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Gets the Teachers and saves them in a var
             var john = context.Teachers.FirstOrDefault(t => t.FirstName == "John");
 
             var jane = context.Teachers.FirstOrDefault(t => t.FirstName == "Jane");
@@ -92,6 +93,7 @@ namespace Labb2LINQ
 
             };
 
+            // Adds the Subjects to their Teacher
             jane.Subjects = new List<Subject>
             {
                 context.Subjects.FirstOrDefault(t => t.Name == "history")
@@ -108,10 +110,12 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Gets the Courses and saves them in a var
             var sut22 = context.Course.FirstOrDefault(t => t.Name == "sut22");
 
             var sut23 = context.Course.FirstOrDefault(t => t.Name == "sut23");
 
+            // Adds the Subjects to their Course
             sut22.Subjects = new List<Subject>
             {
                 context.Subjects.FirstOrDefault(t => t.Name == "math"),
@@ -128,12 +132,15 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Gets all the teachers that are assigned to the Math Subject
             var mathTeachers = context.Teachers
                 .Where(t => t.Subjects.Any(s => s.Name == "Math"))
                 .ToList();
 
+            // Loops through all the Teachers
             foreach (var teacher in mathTeachers)
             {
+                // Displays the Teachers names
                 Console.WriteLine($"Teacher {teacher.FirstName} {teacher.LastName} teaches Math");
             }
         }
@@ -141,9 +148,12 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Gets all the students including their teachers
             var studentsWithTeachers = context.Students.Include(s => s.Teacher);
+            // Loops through all the students
             foreach (var teacher in studentsWithTeachers)
             {
+                // Displays the name of the Student and their Teacher
                 Console.WriteLine($"Student {teacher.FirstName} {teacher.LastName} With Teacher {teacher.Teacher.FirstName} {teacher.Teacher.LastName}");
             }
         }
@@ -151,14 +161,17 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Checks if the subject exists
             bool containsProgramming1 = context.Subjects.Any(s => s.Name == "programmering1");
 
             if (containsProgramming1)
             {
+                // If it exists
                 Console.WriteLine("Ämnen tabell innehåller programmering1");
             }
             else
             {
+                // If it doesn't exist
                 Console.WriteLine("Ämnen tabell innehåller inte programmering1");
             }
         }
@@ -183,12 +196,15 @@ namespace Labb2LINQ
         {
             var context = new LINQDBContext();
 
+            // Get the student to update
             var bob = context.Students.FirstOrDefault(t => t.FirstName == "Bob");
 
             if (bob != null)
             {
+                // Updates the students Teacher
                 bob.TeacherId = 4;
 
+                // Saves
                 context.SaveChanges();
             }
         }
